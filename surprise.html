@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       SURPRISE PAGE — surprise.html
+       ✏️ Edit the hidden message, final message, and button text
+       ============================================================ -->
+
+  <title>One Last Thing…</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .surprise-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 1.5rem 5rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Warm ambient candle glow */
+    .surprise-page::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 45%,
+        rgba(240, 200, 140, 0.14) 0%,
+        rgba(210, 130, 80,  0.08) 35%,
+        rgba(181, 101, 118, 0.06) 60%,
+        transparent 80%);
+      pointer-events: none;
+      animation: warmGlow 7s ease-in-out infinite alternate;
+    }
+
+    @keyframes warmGlow {
+      from { opacity: 0.7; }
+      to   { opacity: 1.0; }
+    }
+
+    /* ── Pre-Reveal ──────────────────────────────────────────── */
+    .pre-reveal {
+      max-width: 560px;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .pre-reveal.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+    }
+
+    .tease-text {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-mid);
+      line-height: 1.9;
+      margin: 1.5rem 0 3rem;
+    }
+
+    /* ── Reveal Button ───────────────────────────────────────── */
+    .btn-reveal {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      padding: 1.2rem 3.2rem;
+      background: linear-gradient(135deg, var(--rose-dried) 0%, var(--terracotta) 60%, var(--amber) 100%);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--trans-med);
+      box-shadow: 0 6px 30px rgba(180, 90, 80, 0.4), 0 2px 10px rgba(60, 20, 10, 0.2);
+      animation: warmButtonPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes warmButtonPulse {
+      0%, 100% { box-shadow: 0 6px 30px rgba(180,90,80,0.3), 0 2px 10px rgba(60,20,10,0.15); transform: scale(1); }
+      50%       { box-shadow: 0 10px 50px rgba(180,90,80,0.55), 0 4px 20px rgba(60,20,10,0.25); transform: scale(1.02); }
+    }
+
+    .btn-reveal::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .btn-reveal:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 55px rgba(180,90,80,0.6), 0 6px 20px rgba(60,20,10,0.3);
+    }
+
+    .btn-reveal:hover::before { opacity: 1; }
+
+    /* ── Reveal Container ────────────────────────────────────── */
+    .reveal-container {
+      max-width: 700px;
+      width: 100%;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.9) translateY(20px);
+      padding: 1rem;
+      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .reveal-container.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
+
+    /* ── Reveal Card ─────────────────────────────────────────── */
+    .reveal-card {
+      background: rgba(253, 248, 238, 0.97);
+      border: 1px solid rgba(193, 127, 58, 0.35);
+      box-shadow:
+        0 30px 100px rgba(180, 100, 50, 0.25),
+        0 8px 30px rgba(60, 30, 10, 0.15),
+        inset 0 1px 0 rgba(255,255,255,0.95);
+      padding: 4rem 3.5rem;
+      position: relative;
+    }
+
+    /* Warm stripe top and bottom */
+    .reveal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--rose-dried), var(--amber), var(--terracotta), var(--amber), var(--rose-dried));
+      background-size: 200% 100%;
+      animation: stripeSlide 4s linear infinite;
+    }
+
+    .reveal-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--amber), var(--rose-dried), var(--amber));
+    }
+
+    @keyframes stripeSlide {
+      0%   { background-position: 0%   0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* ── Big Heart Reveal ────────────────────────────────────── */
+    .reveal-heart {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1.5rem;
+      animation: heartBloom 1s cubic-bezier(0.34,1.56,0.64,1) 0.3s both,
+                 heartBob 3.5s ease-in-out 1.3s infinite;
+    }
+
+    @keyframes heartBloom {
+      from { transform: scale(0) rotate(-20deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes heartBob {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50%       { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    /* ── Hidden Message ──────────────────────────────────────── */
+    .hidden-message {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.2vw, 1.18rem);
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 2;
+      margin-bottom: 2rem;
+      opacity: 0;
+    }
+
+    .hidden-message.animated { animation: cardFadeIn 1.5s ease 0.5s forwards; }
+    .hidden-message em { color: var(--terracotta); }
+    .hidden-message strong { color: var(--rose-dried); font-style: normal; }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-divider {
+      font-family: var(--font-script);
+      font-size: 1.1rem;
+      color: var(--amber);
+      letter-spacing: 0.15em;
+      display: block;
+      margin: 1.5rem 0;
+      opacity: 0;
+    }
+
+    .reveal-divider.animated { animation: cardFadeIn 1.5s ease 1.1s forwards; }
+
+    /* ── Final Big Message ───────────────────────────────────── */
+    .final-message {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--terracotta);
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+      opacity: 0;
+    }
+
+    .final-message.animated {
+      animation: finalBloom 1.8s cubic-bezier(0.34,1.56,0.64,1) 1.6s forwards;
+    }
+
+    @keyframes finalBloom {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .final-script {
+      font-family: var(--font-script);
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      color: var(--rose-dried);
+      display: block;
+      opacity: 0;
+    }
+
+    .final-script.animated { animation: cardFadeIn 1.5s ease 2.4s forwards; }
+
+    .final-sub {
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 1.5rem;
+      opacity: 0;
+    }
+
+    .final-sub.animated { animation: cardFadeIn 1.5s ease 2.9s forwards; }
+
+    .nav-back { margin-top: 2.5rem; opacity: 0; }
+    .nav-back.animated { animation: cardFadeIn 1.5s ease 3.4s forwards; }
+
+    @media (max-width: 600px) {
+      .reveal-card { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="petal-canvas"></canvas>
+  <div class="hearts-container"></div>
+  <div class="page-transition active"></div>
+
+  <nav class="luxury-nav">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="memories.html">Memories</a></li>
+      <li><span class="nav-flower">✿</span></li>
+      <li><a href="letter.html">Letter</a></li>
+      <li><a href="poem.html">Poem</a></li>
+      <li><a href="surprise.html">Surprise</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="surprise-page">
+
+      <!-- PRE-REVEAL -->
+      <div class="pre-reveal" id="pre-reveal">
+
+        <p class="fade-in" style="font-family:var(--font-script);font-size:1.3rem;color:var(--rose-dried);margin-bottom:0.5rem;">
+          one more thing…
+        </p>
+        <h1 class="section-title fade-in fade-in-delay-1">A Little Surprise</h1>
+        <div class="ornament fade-in fade-in-delay-2">
+          <span class="ornament-line"></span>
+          <span class="ornament-symbol">🎁</span>
+          <span class="ornament-line"></span>
+        </div>
+
+        <!-- ✏️ EDIT: Teaser text before the button -->
+        <p class="tease-text fade-in fade-in-delay-3">
+          You have made it through every page, every word,<br>
+          every memory I gathered just for you.<br>
+          There is one last thing I want you to know.
+        </p>
+
+        <!-- ✏️ EDIT: Button text -->
+        <button class="btn-reveal fade-in fade-in-delay-4" onclick="triggerReveal()">
+          Open My Surprise ♥
+        </button>
+      </div>
+
+      <!-- REVEAL -->
+      <div class="reveal-container" id="reveal-container">
+        <div class="reveal-card">
+
+          <span class="reveal-heart">🌸</span>
+
+          <!-- =====================================================
+               YOUR HIDDEN MESSAGE GOES HERE
+               Revealed only when the button is clicked.
+               ===================================================== -->
+          <p class="hidden-message" id="hidden-msg">
+            Mom, I want you to know something simple and true:<br><br>
+            <em>You are one of the greatest gifts of my life.</em><br><br>
+            Not just for everything you have done —<br>
+            but for <strong>who you are.</strong><br><br>
+            For the way you love without asking for anything back.<br>
+            For the warmth you bring to every room, every conversation,<br>
+            every ordinary moment you somehow make extraordinary.<br><br>
+            <em>I am so proud, so lucky, so grateful to be yours.</em>
+          </p>
+          <!-- ===================================================== -->
+
+          <span class="reveal-divider" id="reveal-divider">~ with all my love ~</span>
+
+          <!-- ✏️ EDIT: The BIG final message -->
+          <h2 class="final-message" id="final-msg">
+            Happy Valentine's Day
+          </h2>
+
+          <!-- ✏️ EDIT: Script line below the big message -->
+          <span class="final-script" id="final-script">My wonderful Mom</span>
+
+          <!-- ✏️ EDIT: Closing line -->
+          <p class="final-sub" id="final-sub">
+            Today, and every day, I love you more than you know.
+          </p>
+
+          <div class="nav-back" id="nav-back">
+            <a href="index.html" class="btn-warm">
+              ← Start Again From The Beginning
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let revealed = false;
+
+    function triggerReveal() {
+      if (revealed) return;
+      revealed = true;
+
+      const preReveal     = document.getElementById('pre-reveal');
+      const revealCont    = document.getElementById('reveal-container');
+      const hiddenMsg     = document.getElementById('hidden-msg');
+      const revealDivider = document.getElementById('reveal-divider');
+      const finalMsg      = document.getElementById('final-msg');
+      const finalScript   = document.getElementById('final-script');
+      const finalSub      = document.getElementById('final-sub');
+      const navBack       = document.getElementById('nav-back');
+
+      // Fade out pre-reveal
+      preReveal.classList.add('hidden');
+
+      // Burst of warm hearts
+      burstHearts();
+
+      setTimeout(() => {
+        revealCont.classList.add('visible');
+        setTimeout(() => hiddenMsg.classList.add('animated'),     350);
+        setTimeout(() => revealDivider.classList.add('animated'), 950);
+        setTimeout(() => finalMsg.classList.add('animated'),      1500);
+        setTimeout(() => finalScript.classList.add('animated'),   2300);
+        setTimeout(() => finalSub.classList.add('animated'),      2800);
+        setTimeout(() => navBack.classList.add('animated'),       3300);
+      }, 600);
+    }
+
+    function burstHearts() {
+      const container = document.querySelector('.hearts-container');
+      const EMOJIS  = ['♥', '❤', '💕', '💗', '🌸', '✿', '❀', '🌺'];
+      const COLORS  = ['#b56576', '#c17f3a', '#d4889a', '#d9a05a', '#e8a0a8', '#f0c080'];
+
+      // Initial burst
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const h = document.createElement('span');
+          h.classList.add('heart');
+          h.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+          const size  = 1.0 + Math.random() * 2.2;
+          const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+          h.style.cssText = `
+            left: ${Math.random() * 100}%;
+            font-size: ${size}rem;
+            animation-duration: ${7 + Math.random() * 9}s;
+            animation-delay: ${Math.random() * 1}s;
+            color: ${color};
+            filter: drop-shadow(0 0 5px ${color}99);
+          `;
+          container.appendChild(h);
+          setTimeout(() => h.remove(), 16000);
+        }, i * 60);
+      }
+
+      // Sustained
+      setInterval(() => {
+        for (let i = 0; i < 2; i++) {
+          const h = document.createElement('span');
+          h.classList.add('heart');
+          h.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+          const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+          h.style.cssText = `
+            left: ${Math.random() * 100}%;
+            font-size: ${0.8 + Math.random() * 1.6}rem;
+            animation-duration: ${8 + Math.random() * 10}s;
+            animation-delay: 0s;
+            color: ${color};
+          `;
+          container.appendChild(h);
+          setTimeout(() => h.remove(), 18000);
+        }
+      }, 700);
+    }
+  </script>
+</body>
+</html>

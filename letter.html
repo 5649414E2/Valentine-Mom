@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter For Mom</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .letter-page {
+      min-height: 100vh;
+      padding: 130px 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .letter-page::before {
+      content: '';
+      position: fixed;
+      top: 30%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 65vw; height: 60vh;
+      background: radial-gradient(ellipse, rgba(240,200,140,0.15) 0%, rgba(200,140,80,0.07) 50%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .letter-paper {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 2rem;
+      background: rgba(253, 248, 238, 0.96);
+      border: 1px solid rgba(193, 127, 58, 0.25);
+      box-shadow: 0 20px 80px rgba(180,100,50,0.18), 0 4px 20px rgba(60,30,10,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+      padding: 4rem 3.5rem;
+      position: relative;
+      background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(193,127,58,0.08) 31px, rgba(193,127,58,0.08) 32px);
+      background-size: 100% 32px;
+    }
+
+    .letter-paper::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 70px;
+      width: 1px;
+      background: rgba(181,101,118,0.15);
+    }
+
+    .letter-stamp {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      width: 60px; height: 72px;
+      border: 2px solid rgba(193,127,58,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(232,213,183,0.4);
+      outline: 4px dashed rgba(193,127,58,0.2);
+      outline-offset: 4px;
+    }
+
+    .letter-date {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      text-align: right;
+      margin-bottom: 2rem;
+      font-style: italic;
+      animation: paperFadeIn 1.2s ease 0.4s both;
+    }
+
+    .letter-greeting {
+      font-family: var(--font-script);
+      font-size: 2rem;
+      color: var(--terracotta);
+      margin-bottom: 1.5rem;
+      animation: paperFadeIn 1.2s ease 0.7s both;
+    }
+
+    .letter-body p {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 2.1;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: paperFadeIn 1.2s ease forwards;
+    }
+
+    .letter-body p:nth-child(1) { animation-delay: 0.9s; }
+    .letter-body p:nth-child(2) { animation-delay: 1.2s; }
+    .letter-body p:nth-child(3) { animation-delay: 1.5s; }
+    .letter-body p:nth-child(4) { animation-delay: 1.8s; }
+    .letter-body p:nth-child(5) { animation-delay: 2.1s; }
+    .letter-body p:nth-child(6) { animation-delay: 2.4s; }
+    .letter-body p:nth-child(7) { animation-delay: 2.7s; }
+
+    .letter-body em     { color: var(--terracotta); font-style: italic; }
+    .letter-body strong { color: var(--rose-dried); font-weight: 500; }
+    .letter-body u      { text-decoration: underline; text-decoration-color: rgba(193,127,58,0.5); text-underline-offset: 3px; }
+
+    @keyframes paperFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter-closing {
+      margin-top: 2.5rem;
+      text-align: right;
+      opacity: 0;
+      animation: paperFadeIn 1.2s ease 3.0s forwards;
+    }
+
+    .closing-word {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--text-mid);
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+    }
+
+    .letter-signature {
+      font-family: var(--font-script);
+      font-size: 2.2rem;
+      color: var(--terracotta);
+      display: block;
+    }
+
+    .letter-ps {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(193,127,58,0.2);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0;
+      animation: paperFadeIn 1.2s ease 3.4s forwards;
+    }
+
+    .letter-ps strong { color: var(--rose-dried); font-style: normal; }
+
+    .letter-cta {
+      text-align: center;
+      margin-top: 3.5rem;
+      opacity: 0;
+      animation: paperFadeIn 1.2s ease 3.8s forwards;
+    }
+
+    @media (max-width: 600px) {
+      .letter-paper { padding: 2.5rem 1.5rem; }
+      .letter-paper::before, .letter-stamp { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="petal-canvas"></canvas>
+  <div class="hearts-container"></div>
+  <div class="page-transition active"></div>
+
+  <nav class="luxury-nav">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="memories.html">Memories</a></li>
+      <li><span class="nav-flower">&#10047;</span></li>
+      <li><a href="letter.html">Letter</a></li>
+      <li><a href="poem.html">Poem</a></li>
+      <li><a href="surprise.html">Surprise</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="letter-page">
+
+      <p class="fade-in" style="font-family:var(--font-script);font-size:1.2rem;color:var(--rose-dried);text-align:center;margin-bottom:0.5rem;">written from the heart</p>
+      <h1 class="section-title fade-in fade-in-delay-1">My Letter To You</h1>
+      <div class="ornament fade-in fade-in-delay-2">
+        <span class="ornament-line"></span>
+        <span class="ornament-symbol">&#9993;</span>
+        <span class="ornament-line"></span>
+      </div>
+
+      <div class="letter-paper">
+        <div class="letter-stamp">&#127800;</div>
+
+        <!-- EDIT: Date shown on the letter -->
+        <p class="letter-date">Valentine's Day &middot; February 2025</p>
+
+        <!-- EDIT: Greeting -->
+        <p class="letter-greeting">Dearest Mom,</p>
+
+        <!-- =====================================================
+             YOUR LETTER GOES HERE
+             Replace the text inside each paragraph.
+             Use <em> for warm emphasis, <strong> for rose words.
+             ===================================================== -->
+        <div class="letter-body">
+
+          <p>I have been thinking about how to say this properly for a while now, and I keep coming back to the same truth: <em>there are no words big enough.</em> But I am going to try anyway, because you deserve to hear it.</p>
+
+          <p>You have given me so much more than I ever realised growing up. The safety of knowing someone was always in my corner. The warmth of a home you made feel like <u>the softest place in the world</u> to land. The quiet confidence you built in me without me even noticing you were doing it.</p>
+
+          <p>I see it now &mdash; all of it. Every sacrifice that looked like just another ordinary Tuesday. Every worry you carried so I would not have to. <strong>Every time you put me first without me ever asking you to.</strong></p>
+
+          <p>I think about all the little things: the way the house felt when you were in it, the sound of your voice when I called in the middle of something hard, the way you always knew &mdash; <em>somehow always knew</em> &mdash; when I needed you most.</p>
+
+          <p>You are the reason I know what love looks like. Not the grand, dramatic kind &mdash; but the <u>real kind</u>. The steady, showing-up, never-giving-up kind. I learned it from watching you.</p>
+
+          <p><strong>Thank you, Mom.</strong> For everything you are. For everything you have given me. For loving me the way that only you know how. I love you more than I could ever properly say.</p>
+
+        </div>
+        <!-- ===================================================== -->
+
+        <div class="letter-closing">
+          <!-- EDIT: Change the closing and your name -->
+          <span class="closing-word">All my love, always,</span>
+          <span class="letter-signature">Your Child &#9829;</span>
+        </div>
+
+        <!-- EDIT: Optional postscript -->
+        <p class="letter-ps"><strong>P.S.</strong> &mdash; Keep going. There is a poem waiting for you next.</p>
+
+      </div>
+
+      <div class="letter-cta">
+        <a href="poem.html" class="btn-warm">Read My Poem For You &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

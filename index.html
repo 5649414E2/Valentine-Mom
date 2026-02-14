@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       HOME PAGE — index.html
+       ✏️ EDIT: Look for comments marked with ✏️ to personalise
+       ============================================================ -->
+
+  <!-- ✏️ EDIT: Browser tab title -->
+  <title>For Mom, With Love</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+    }
+
+    /* Warm candle-glow behind the title */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 75vw;
+      height: 75vh;
+      background: radial-gradient(ellipse,
+        rgba(240, 200, 140, 0.22) 0%,
+        rgba(210, 130, 80,  0.10) 40%,
+        transparent 70%);
+      pointer-events: none;
+      animation: candleFlicker 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes candleFlicker {
+      0%   { opacity: 0.7; transform: translate(-50%, -50%) scale(1.00); }
+      100% { opacity: 1.0; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    /* ── Flower Emoji Top ──────────────────────────────────── */
+    .hero-flower {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1.5rem;
+      animation: flowerAppear 1.4s cubic-bezier(0.34,1.56,0.64,1) 0.3s both,
+                 flowerSway 4s ease-in-out 1.7s infinite;
+    }
+
+    @keyframes flowerAppear {
+      from { transform: scale(0) rotate(-25deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+    }
+    @keyframes flowerSway {
+      0%, 100% { transform: rotate(-4deg) scale(1); }
+      50%       { transform: rotate( 4deg) scale(1.05); }
+    }
+
+    /* ── Script Greeting ───────────────────────────────────── */
+    .hero-greeting {
+      font-family: var(--font-script);
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      color: var(--rose-dried);
+      margin-bottom: 0.4rem;
+      animation: fadeSlideUp 1.2s ease 0.6s both;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Main Title ────────────────────────────────────────── */
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+      animation: fadeSlideUp 1.2s ease 0.8s both;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-title span {
+      color: var(--terracotta);
+      font-style: italic;
+    }
+
+    /* ── Tagline ───────────────────────────────────────────── */
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--amber);
+      animation: fadeSlideUp 1.2s ease 1.0s both;
+      margin-bottom: 2rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Divider ───────────────────────────────────────────── */
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+      animation: fadeSlideUp 1.2s ease 1.1s both;
+    }
+
+    .hero-divider-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--amber-light));
+    }
+
+    .hero-divider-line:last-child {
+      background: linear-gradient(to left, transparent, var(--amber-light));
+    }
+
+    .hero-divider-symbol {
+      font-family: var(--font-script);
+      font-size: 1.3rem;
+      color: var(--rose-dried);
+    }
+
+    /* ── Subtitle ──────────────────────────────────────────── */
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-mid);
+      line-height: 1.9;
+      max-width: 500px;
+      margin: 0 auto 3rem;
+      animation: fadeSlideUp 1.2s ease 1.2s both;
+    }
+
+    /* ── CTA ───────────────────────────────────────────────── */
+    .hero-cta {
+      animation: fadeSlideUp 1.2s ease 1.5s both;
+    }
+
+    /* ── Scroll Hint ───────────────────────────────────────── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeSlideUp 2s ease 2.2s both;
+    }
+
+    .scroll-hint .drip {
+      width: 1px;
+      height: 38px;
+      background: linear-gradient(to bottom, var(--amber-light), transparent);
+      animation: drip 2s ease-in-out infinite;
+    }
+
+    @keyframes drip {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      51%  { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── Keyframes ─────────────────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Teaser Grid ───────────────────────────────────────── */
+    .teaser-section {
+      padding: 5rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(232, 213, 183, 0.3) 30%,
+        rgba(232, 213, 183, 0.3) 70%,
+        transparent 100%);
+    }
+
+    .teaser-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1.5rem;
+      max-width: 860px;
+      margin: 2.5rem auto 0;
+    }
+
+    .teaser-card {
+      padding: 2rem 1.2rem;
+      background: rgba(255, 248, 238, 0.7);
+      border: 1px solid rgba(193, 127, 58, 0.2);
+      text-decoration: none;
+      transition: var(--trans-med);
+      box-shadow: 0 4px 20px rgba(180, 100, 50, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .teaser-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--rose-dried), var(--amber));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .teaser-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 35px rgba(180, 100, 50, 0.18);
+      border-color: rgba(193, 127, 58, 0.4);
+    }
+
+    .teaser-card:hover::after { transform: scaleX(1); }
+
+    .teaser-icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .teaser-label {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="petal-canvas"></canvas>
+  <div class="hearts-container"></div>
+  <div class="page-transition active"></div>
+
+  <nav class="luxury-nav">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="memories.html">Memories</a></li>
+      <li><span class="nav-flower">✿</span></li>
+      <li><a href="letter.html">Letter</a></li>
+      <li><a href="poem.html">Poem</a></li>
+      <li><a href="surprise.html">Surprise</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <section class="hero">
+      <div class="hero-content">
+
+        <span class="hero-flower">🌸</span>
+
+        <!-- ✏️ EDIT: The handwritten-style greeting -->
+        <p class="hero-greeting">Happy Valentine's Day,</p>
+
+        <!-- ✏️ EDIT: The big bold title — put her name or a word here -->
+        <h1 class="hero-title">Dear <span>Mom</span></h1>
+
+        <!-- ✏️ EDIT: Italic tagline under the title -->
+        <p class="hero-tagline">The woman who taught me everything beautiful</p>
+
+        <div class="hero-divider">
+          <span class="hero-divider-line"></span>
+          <span class="hero-divider-symbol">♥</span>
+          <span class="hero-divider-line"></span>
+        </div>
+
+        <!-- ✏️ EDIT: Short intro message on the landing page -->
+        <p class="hero-subtitle">
+          There aren't enough words in the world to tell you<br>
+          how much you mean to me. But I'm going to try.
+        </p>
+
+        <div class="hero-cta">
+          <!-- ✏️ EDIT: Button text — links to memories.html -->
+          <a href="memories.html" class="btn-warm btn-pulse">
+            Open This With Love →
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-hint">
+        <span>Scroll</span>
+        <span class="drip"></span>
+      </div>
+    </section>
+
+    <!-- Teaser Section -->
+    <section class="teaser-section">
+      <div class="ornament fade-in">
+        <span class="ornament-line"></span>
+        <span class="ornament-symbol">✿</span>
+        <span class="ornament-line"></span>
+      </div>
+
+      <!-- ✏️ EDIT: Teaser heading -->
+      <h2 class="section-title fade-in fade-in-delay-1">Made Just For You</h2>
+      <p class="section-subtitle fade-in fade-in-delay-2" style="margin-top:0.5rem;">
+        A little piece of my heart, in every page
+      </p>
+
+      <div class="teaser-grid">
+        <a href="memories.html" class="teaser-card fade-in fade-in-delay-1">
+          <span class="teaser-icon">📷</span>
+          <p class="teaser-label">Our Memories</p>
+        </a>
+        <a href="letter.html" class="teaser-card fade-in fade-in-delay-2">
+          <span class="teaser-icon">✉️</span>
+          <p class="teaser-label">My Letter</p>
+        </a>
+        <a href="poem.html" class="teaser-card fade-in fade-in-delay-3">
+          <span class="teaser-icon">🌸</span>
+          <p class="teaser-label">A Poem</p>
+        </a>
+        <a href="surprise.html" class="teaser-card fade-in fade-in-delay-4">
+          <span class="teaser-icon">🎁</span>
+          <p class="teaser-label">A Surprise</p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

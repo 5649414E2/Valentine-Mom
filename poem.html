@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       POEM PAGE — poem.html
+       HOW TO EDIT:
+       - Find "YOUR POEM GOES HERE" below
+       - Each stanza is a div.stanza
+       - Each line is a span.poem-line
+       - Add class="warm" for terracotta coloured lines
+       - Add class="rose" for rose coloured lines
+       - Add class="large" for a bigger closing line
+       ============================================================ -->
+
+  <title>A Poem For Mom</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .poem-page {
+      min-height: 100vh;
+      padding: 130px 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Botanical Frame ─────────────────────────────────────── */
+    .poem-frame {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 2rem;
+      position: relative;
+      background: rgba(253, 248, 238, 0.96);
+      box-shadow:
+        0 25px 90px rgba(180, 100, 50, 0.2),
+        0 6px 24px rgba(60, 30, 10, 0.12),
+        inset 0 0 60px rgba(240, 200, 140, 0.08);
+      padding: 4rem 3.5rem;
+      border: 1px solid rgba(193, 127, 58, 0.3);
+    }
+
+    /* Inner double border */
+    .poem-frame::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(193, 127, 58, 0.15);
+      pointer-events: none;
+    }
+
+    /* Bottom warm stripe */
+    .poem-frame::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--rose-dried), var(--amber), var(--rose-dried));
+    }
+
+    /* ── Corner Flowers ──────────────────────────────────────── */
+    .corner {
+      position: absolute;
+      font-size: 1.2rem;
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .corner-tl { top: 20px; left: 20px; }
+    .corner-tr { top: 20px; right: 20px; transform: scaleX(-1); }
+    .corner-bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
+    .corner-br { bottom: 20px; right: 20px; transform: scale(-1); }
+
+    /* ── Poem Top Decoration ─────────────────────────────────── */
+    .poem-top {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .poem-top-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 0.8rem;
+      animation: bloomIn 1.4s cubic-bezier(0.34,1.56,0.64,1) 0.5s both;
+    }
+
+    @keyframes bloomIn {
+      from { transform: scale(0) rotate(-30deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+    }
+
+    /* ── Poem Title ──────────────────────────────────────────── */
+    .poem-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 500;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .poem-subtitle-script {
+      font-family: var(--font-script);
+      font-size: 1.1rem;
+      color: var(--rose-dried);
+      text-align: center;
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    .poem-divider-text {
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      letter-spacing: 0.7em;
+      color: rgba(193, 127, 58, 0.5);
+      text-align: center;
+      display: block;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Stanzas ─────────────────────────────────────────────── */
+    .stanza {
+      margin-bottom: 2.5rem;
+      text-align: center;
+      opacity: 0;
+      animation: verseFade 1.4s ease forwards;
+    }
+
+    .stanza:nth-child(1) { animation-delay: 0.8s; }
+    .stanza:nth-child(2) { animation-delay: 1.4s; }
+    .stanza:nth-child(3) { animation-delay: 2.0s; }
+    .stanza:nth-child(4) { animation-delay: 2.6s; }
+    .stanza:nth-child(5) { animation-delay: 3.2s; }
+    .stanza:nth-child(6) { animation-delay: 3.8s; }
+
+    @keyframes verseFade {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Poem Lines ──────────────────────────────────────────── */
+    .poem-line {
+      display: block;
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 1.95;
+      letter-spacing: 0.01em;
+    }
+
+    .poem-line.warm  { color: var(--terracotta); }
+    .poem-line.rose  { color: var(--rose-dried); }
+    .poem-line.large {
+      font-size: clamp(1.15rem, 3vw, 1.4rem);
+      font-weight: 500;
+      color: var(--terracotta);
+    }
+
+    /* ── Bottom Flourish ─────────────────────────────────────── */
+    .poem-flourish {
+      text-align: center;
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: verseFade 1.4s ease 4.4s forwards;
+    }
+
+    .poem-flourish span {
+      font-family: var(--font-script);
+      font-size: 1rem;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+    }
+
+    .poem-author {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      display: block;
+      margin-top: 1rem;
+      opacity: 0;
+      animation: verseFade 1.4s ease 4.7s forwards;
+    }
+
+    .poem-cta {
+      text-align: center;
+      margin-top: 3.5rem;
+      opacity: 0;
+      animation: verseFade 1.4s ease 5.0s forwards;
+    }
+
+    @media (max-width: 600px) {
+      .poem-frame { padding: 2.5rem 1.5rem; }
+      .corner { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="petal-canvas"></canvas>
+  <div class="hearts-container"></div>
+  <div class="page-transition active"></div>
+
+  <nav class="luxury-nav">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="memories.html">Memories</a></li>
+      <li><span class="nav-flower">✿</span></li>
+      <li><a href="letter.html">Letter</a></li>
+      <li><a href="poem.html">Poem</a></li>
+      <li><a href="surprise.html">Surprise</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="poem-page">
+
+      <p class="fade-in" style="font-family:var(--font-script);font-size:1.2rem;color:var(--rose-dried);text-align:center;margin-bottom:0.5rem;">
+        words grown in a garden of love
+      </p>
+      <h1 class="section-title fade-in fade-in-delay-1">A Poem For You</h1>
+      <div class="ornament fade-in fade-in-delay-2">
+        <span class="ornament-line"></span>
+        <span class="ornament-symbol">🌸</span>
+        <span class="ornament-line"></span>
+      </div>
+
+      <div class="poem-frame fade-in fade-in-delay-3">
+
+        <!-- Corner petals -->
+        <span class="corner corner-tl">🌿</span>
+        <span class="corner corner-tr">🌿</span>
+        <span class="corner corner-bl">🌿</span>
+        <span class="corner corner-br">🌿</span>
+
+        <div class="poem-top">
+          <span class="poem-top-icon">🌸</span>
+          <!-- ✏️ EDIT: Poem title and subtitle -->
+          <h2 class="poem-title">Everything You Are</h2>
+          <span class="poem-subtitle-script">for the woman who is home</span>
+          <span class="poem-divider-text">~ ~ ~</span>
+        </div>
+
+        <!-- ======================================================
+             YOUR POEM GOES HERE
+             Each stanza = one div.stanza
+             Each line   = one span.poem-line
+             Classes: .warm (terracotta) .rose (rose) .large (big)
+             ====================================================== -->
+
+        <div class="stanza">
+          <span class="poem-line">Before I knew the name of love,</span>
+          <span class="poem-line warm">I knew the warmth of your hands.</span>
+          <span class="poem-line">Before I understood the world,</span>
+          <span class="poem-line warm">I understood that you were home.</span>
+        </div>
+
+        <div class="stanza">
+          <span class="poem-line">You are the thread that runs through</span>
+          <span class="poem-line">every good thing that I am.</span>
+          <span class="poem-line rose">In every kindness I have shown,</span>
+          <span class="poem-line rose">I learned it first from you.</span>
+        </div>
+
+        <div class="stanza">
+          <span class="poem-line">There is a kind of love that doesn't shout —</span>
+          <span class="poem-line">it simply shows, day after quiet day.</span>
+          <span class="poem-line warm">That is yours. That has always been yours.</span>
+          <span class="poem-line">And it has shaped me in the deepest way.</span>
+        </div>
+
+        <div class="stanza">
+          <span class="poem-line">If I could give you anything today,</span>
+          <span class="poem-line">I would give you what you gave to me:</span>
+          <span class="poem-line rose">The certainty that you are loved —</span>
+          <span class="poem-line rose">more than words could ever reach.</span>
+        </div>
+
+        <div class="stanza">
+          <span class="poem-line">So here, on this Valentine's Day,</span>
+          <span class="poem-line">with a full and grateful heart —</span>
+          <span class="poem-line large warm">Thank you, Mom, for everything.</span>
+          <span class="poem-line large">You are my favourite work of art.</span>
+        </div>
+
+        <!-- ====================================================== -->
+
+        <div class="poem-flourish">
+          <span>~ with all the love I have ~</span>
+        </div>
+
+        <!-- ✏️ EDIT: Author credit -->
+        <span class="poem-author">written for you, with everything I have</span>
+
+      </div>
+
+      <div class="poem-cta">
+        <a href="surprise.html" class="btn-warm btn-pulse">
+          One Last Surprise For You →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
